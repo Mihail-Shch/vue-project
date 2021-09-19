@@ -10,7 +10,8 @@ export default new Vuex.Store({
   state: {
     films: [],
     favorite: [],
-    movieItem: null
+    movieItem: null,
+    isLoaded: false
   },
   actions: {
     async getFilms({commit}, number) {
@@ -25,10 +26,12 @@ export default new Vuex.Store({
       commit('addToCart', film)
     },
     async getMovieInfo({commit}, film) {
+      commit('setIsLoaded', false)
       const res = await fetch(`${link}movie/${film.id}?api_key=${apiKey}`);
       const resp = await res.json()
 
       commit ('setMovieItem', resp)
+      commit('setIsLoaded', true)
     }
   },
   mutations: {
@@ -43,6 +46,9 @@ export default new Vuex.Store({
     },
     setMovieItem(state, film) {
       state.movieItem = film
+    },
+    setIsLoaded(state, boolean) {
+      state.isLoaded = boolean
     }
   },
   getters: {
@@ -52,8 +58,11 @@ export default new Vuex.Store({
     getFavorite(state) {
       return state.favorite;
     },
-    getNumberMoviesInCart(state) {
-      return state.favorite.length;
+    getMovieItem(state) {
+      return state.movieItem;
+    },
+    getIsLoaded(state) {
+      return state.isLoaded;
     }
   },
   modules: {

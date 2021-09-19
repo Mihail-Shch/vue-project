@@ -26,6 +26,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: #ebeeff;
+
+  min-height: 100vh;
 }
 
 #nav {
@@ -35,6 +37,12 @@ export default {
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+
+  transition: border-bottom 0.9s linear;
+}
+
+#nav a:hover {
+  border-bottom: 1px solid #000;
 }
 
 #nav a.router-link-exact-active {

@@ -35,7 +35,7 @@ export default {
     },
     isAdded: {
       type: Boolean,
-      require: true,
+      require: false,
     },
   },
   methods: {
