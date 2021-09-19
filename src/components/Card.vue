@@ -1,10 +1,19 @@
 <template>
   <div class="card">
-    <div class="card__close" v-if="isAdded" @click="deleteMovie(film)">x</div>
-    <div class="card-image">
-      <img :src="`https://image.tmdb.org/t/p/w500${film.backdrop_path}`" />
-      <span class="card-title">{{ film.title }}</span>
+    <div
+      class="card__close"
+      v-if="currentRouteName == 'Favorite'"
+      @click="deleteMovie(film)"
+    >
+      x
     </div>
+    <router-link tag="div" class="card-image" :to="`movie/${film.id}`">
+      <img
+        :src="`https://image.tmdb.org/t/p/w500${film.backdrop_path}`"
+        @click="getInfoAboutMovie(film)"
+      />
+      <span class="card-title">{{ film.title }}</span>
+    </router-link>
     <div class="card-content">
       <p>
         {{ film.overview }}
@@ -38,6 +47,14 @@ export default {
       if (window.confirm("Вы действительно хотите удалить этот фильм?")) {
         this.$store.commit("deleteFilm", film);
       }
+    },
+    getInfoAboutMovie(film) {
+      this.$store.dispatch("getMovieInfo", film);
+    },
+  },
+  computed: {
+    currentRouteName() {
+      return this.$route.name;
     },
   },
 };

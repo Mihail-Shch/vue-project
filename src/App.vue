@@ -4,9 +4,7 @@
       <router-link to="/">Главная</router-link> |
       <router-link to="/favorite" class="nav__link-favorite"
         >Избранное
-        <span class="nav__link-favorite-tooltip">{{
-          getNumberMoviesInCart
-        }}</span>
+        <span class="nav__link-favorite-tooltip">{{ getFavorite.length }}</span>
       </router-link>
     </div>
     <router-view />
@@ -16,7 +14,7 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  computed: mapGetters(["getNumberMoviesInCart"]),
+  computed: mapGetters(["getFavorite"]),
 };
 </script>
 

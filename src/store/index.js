@@ -10,6 +10,7 @@ export default new Vuex.Store({
   state: {
     films: [],
     favorite: [],
+    movieItem: null
   },
   actions: {
     async getFilms({commit}, number) {
@@ -22,6 +23,12 @@ export default new Vuex.Store({
     },
     addToFavorite({commit}, film) {
       commit('addToCart', film)
+    },
+    async getMovieInfo({commit}, film) {
+      const res = await fetch(`${link}movie/${film.id}?api_key=${apiKey}`);
+      const resp = await res.json()
+
+      commit ('setMovieItem', resp)
     }
   },
   mutations: {
@@ -33,6 +40,9 @@ export default new Vuex.Store({
     },
     deleteFilm(state, film) {
       state.favorite = state.favorite.filter(f => f.id !== film.id)
+    },
+    setMovieItem(state, film) {
+      state.movieItem = film
     }
   },
   getters: {
