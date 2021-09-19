@@ -1,12 +1,24 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">Главная</router-link> |
+      <router-link to="/favorite" class="nav__link-favorite"
+        >Избранное
+        <span class="nav__link-favorite-tooltip">{{
+          getNumberMoviesInCart
+        }}</span>
+      </router-link>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
+
+<script>
+import { mapGetters } from "vuex";
+export default {
+  computed: mapGetters(["getNumberMoviesInCart"]),
+};
+</script>
 
 <style>
 #app {
@@ -15,6 +27,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #ebeeff;
 }
 
 #nav {
@@ -27,6 +40,25 @@
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  border-bottom: 1px solid #000;
+}
+
+.nav__link-favorite {
+  position: relative;
+}
+
+.nav__link-favorite-tooltip {
+  display: block;
+  font-size: 10px;
+
+  height: 15px;
+  width: 15px;
+  border-radius: 15px;
+  background-color: #000;
+  color: #fff;
+
+  position: absolute;
+  top: -5px;
+  right: -15px;
 }
 </style>
