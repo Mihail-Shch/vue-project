@@ -2,10 +2,10 @@
   <div class="container">
     <div class="films-wrapper">
       <Card
-        v-for="film in allFilms"
+        v-for="(film, index) in allFilms"
         :key="film.id"
         :film="film"
-        :isAdded="false"
+        :isAdded="getArrayOfAdded[index]"
       />
     </div>
     <paginate
@@ -31,7 +31,7 @@ export default {
   async mounted() {
     this.$store.dispatch("getFilms", 1);
   },
-  computed: mapGetters(["allFilms"]),
+  computed: mapGetters(["allFilms", "getArrayOfAdded"]),
   methods: {
     getMovies(e) {
       this.$store.dispatch("getFilms", e);

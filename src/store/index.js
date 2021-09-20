@@ -10,17 +10,20 @@ export default new Vuex.Store({
   state: {
     films: [],
     favorite: [],
+    arrayOfAdded: [],
     movieItem: null,
     isLoaded: false
   },
   actions: {
-    async getFilms({commit}, number) {
+    async getFilms({state, commit}, number) {
       const res = await fetch(
         `${link}movie/top_rated?api_key=${apiKey}&page=${number}`
       );
       const resp = await res.json();
       
+      const filteredArray = state.films.map(f => state.favorite.includes(f))
       commit('setFilms', resp.results)
+      commit('setArrayOfAdded', filteredArray)
     },
     addToFavorite({commit}, film) {
       commit('addToCart', film)
@@ -49,6 +52,9 @@ export default new Vuex.Store({
     },
     setIsLoaded(state, boolean) {
       state.isLoaded = boolean
+    },
+    setArrayOfAdded(state, array) {
+      state.arrayOfAdded = array
     }
   },
   getters: {
@@ -63,6 +69,9 @@ export default new Vuex.Store({
     },
     getIsLoaded(state) {
       return state.isLoaded;
+    },
+    getArrayOfAdded(state) {
+      return state.arrayOfAdded;
     }
   },
   modules: {
