@@ -13,7 +13,8 @@ const routes = [
   {
     path: '/favorite',
     name: 'Favorite',
-    component: () => import('../views/Favorite.vue')
+    component: () => import('../views/Favorite.vue'),
+    meta: {isFavorite: true}
   },
   {
     path: '/movie/:id',

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="films-wrapper">
       <Card
-        v-for="film in getFavorite"
+        v-for="film in favorite"
         :key="film.id"
         :film="film"
         :isAdded="true"
@@ -11,11 +11,11 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 import Card from "../components/Card.vue";
 
 export default {
-  computed: mapGetters(["getFavorite"]),
+  computed: mapState(["favorite"]),
   components: {
     Card,
   },

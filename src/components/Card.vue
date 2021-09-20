@@ -2,16 +2,13 @@
   <div class="card">
     <div
       class="card__close"
-      v-if="currentRouteName == 'Favorite'"
+      v-if="$route.meta.isFavorite"
       @click="deleteMovie(film)"
     >
       x
     </div>
     <router-link tag="div" class="card-image" :to="`movie/${film.id}`">
-      <img
-        :src="`https://image.tmdb.org/t/p/w500${film.backdrop_path}`"
-        @click="getInfoAboutMovie(film)"
-      />
+      <img :src="`https://image.tmdb.org/t/p/w500${film.backdrop_path}`" />
       <span class="card-title">{{ film.title }}</span>
     </router-link>
     <div class="card-content">
@@ -19,7 +16,7 @@
         {{ film.overview }}
       </p>
     </div>
-    <button class="card__link" @click="addObject(film)" v-if="!isAdded">
+    <button class="card__link" @click="addObject(film)" v-if="!checkIfInCart">
       В избранное
     </button>
     <button class="card__link disabled" v-else>Добавлено</button>
@@ -27,34 +24,31 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   props: {
     film: {
       type: Object,
-      require: true,
-    },
-    isAdded: {
-      type: Boolean,
-      require: false,
+      required: true,
     },
   },
   methods: {
     addObject(film) {
-      this.$store.commit("addToCart", film);
-      this.isAdded = true;
+      this.$store.dispatch("addToFavorite", film);
     },
     deleteMovie(film) {
       if (window.confirm("Вы действительно хотите удалить этот фильм?")) {
         this.$store.commit("deleteFilm", film);
       }
     },
-    getInfoAboutMovie(film) {
-      this.$store.dispatch("getMovieInfo", film);
-    },
   },
   computed: {
-    currentRouteName() {
-      return this.$route.name;
+    ...mapState(["favorite"]),
+    checkIfInCart() {
+      return !!this.favorite.find((f) => {
+        return this.film.id === f.id;
+      });
     },
   },
 };

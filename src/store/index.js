@@ -10,31 +10,27 @@ export default new Vuex.Store({
   state: {
     films: [],
     favorite: [],
-    arrayOfAdded: [],
-    movieItem: null,
-    isLoaded: false
+    isLoading: false
   },
   actions: {
-    async getFilms({state, commit}, number) {
+    async getFilms({commit}, number) {
       const res = await fetch(
         `${link}movie/top_rated?api_key=${apiKey}&page=${number}`
       );
       const resp = await res.json();
       
-      const filteredArray = state.films.map(f => state.favorite.includes(f))
       commit('setFilms', resp.results)
-      commit('setArrayOfAdded', filteredArray)
     },
     addToFavorite({commit}, film) {
       commit('addToCart', film)
     },
-    async getMovieInfo({commit}, film) {
-      commit('setIsLoaded', false)
-      const res = await fetch(`${link}movie/${film.id}?api_key=${apiKey}`);
+    async getMovieInfo({commit}, filmId) {
+      commit('setIsLoading', true)
+      const res = await fetch(`${link}movie/${filmId}?api_key=${apiKey}`);
       const resp = await res.json()
 
-      commit ('setMovieItem', resp)
-      commit('setIsLoaded', true)
+      commit('setIsLoading', false)
+      return resp;
     }
   },
   mutations: {
@@ -47,32 +43,11 @@ export default new Vuex.Store({
     deleteFilm(state, film) {
       state.favorite = state.favorite.filter(f => f.id !== film.id)
     },
-    setMovieItem(state, film) {
-      state.movieItem = film
+    setIsLoading(state, boolean) {
+      state.isLoading = boolean
     },
-    setIsLoaded(state, boolean) {
-      state.isLoaded = boolean
-    },
-    setArrayOfAdded(state, array) {
-      state.arrayOfAdded = array
-    }
   },
   getters: {
-    allFilms(state) {
-      return state.films;
-    },
-    getFavorite(state) {
-      return state.favorite;
-    },
-    getMovieItem(state) {
-      return state.movieItem;
-    },
-    getIsLoaded(state) {
-      return state.isLoaded;
-    },
-    getArrayOfAdded(state) {
-      return state.arrayOfAdded;
-    }
   },
   modules: {
   }

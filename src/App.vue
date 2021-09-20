@@ -4,7 +4,7 @@
       <router-link to="/">Главная</router-link> |
       <router-link to="/favorite" class="nav__link-favorite"
         >Избранное
-        <span class="nav__link-favorite-tooltip">{{ getFavorite.length }}</span>
+        <span class="nav__link-favorite-tooltip">{{ favorite.length }}</span>
       </router-link>
     </div>
     <router-view />
@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 export default {
-  computed: mapGetters(["getFavorite"]),
+  computed: mapState(["favorite"]),
 };
 </script>
 

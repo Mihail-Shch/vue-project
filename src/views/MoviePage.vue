@@ -1,33 +1,40 @@
 <template>
-  <div class="container flex" v-if="getIsLoaded">
-    <Card :film="getMovieItem" />
+  <div class="container flex" v-if="!isLoading && movieItem">
+    <Card :film="movieItem" />
     <div class="card__desc">
       <h1 class="card__desc-title">MOVIE INFO:</h1>
-      <p>Budget: {{ getMovieItem.budget }}$.</p>
-      <p>Runtime: {{ getMovieItem.runtime }} minutes.</p>
+      <p>Budget: {{ movieItem.budget }}$.</p>
+      <p>Runtime: {{ movieItem.runtime }} minutes.</p>
       <p>
         Genres:
-        <button
-          v-for="genre in getMovieItem.genres"
-          :key="genre.id"
-          class="genre"
-        >
+        <button v-for="genre in movieItem.genres" :key="genre.id" class="genre">
           {{ genre.name }}
         </button>
       </p>
-      <p>Release date: {{ getMovieItem.release_date }}</p>
+      <p>Release date: {{ movieItem.release_date }}</p>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 import Card from "@/components/Card.vue";
 
 export default {
-  computed: mapGetters(["getMovieItem", "getIsLoaded"]),
+  data() {
+    return {
+      movieItem: null,
+    };
+  },
+  computed: {
+    ...mapState(["isLoading"]),
+  },
   components: {
     Card,
+  },
+  async created() {
+    const selectedFilmId = parseInt(this.$route.params.id);
+    this.movieItem = await this.$store.dispatch("getMovieInfo", selectedFilmId);
   },
 };
 </script>

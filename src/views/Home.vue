@@ -1,12 +1,7 @@
 <template>
   <div class="container">
     <div class="films-wrapper">
-      <Card
-        v-for="(film, index) in allFilms"
-        :key="film.id"
-        :film="film"
-        :isAdded="getArrayOfAdded[index]"
-      />
+      <Card v-for="film in films" :key="film.id" :film="film" />
     </div>
     <paginate
       :page-count="20"
@@ -20,7 +15,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 import Card from "../components/Card.vue";
 
 export default {
@@ -28,10 +23,10 @@ export default {
   components: {
     Card,
   },
-  async mounted() {
+  async created() {
     this.$store.dispatch("getFilms", 1);
   },
-  computed: mapGetters(["allFilms", "getArrayOfAdded"]),
+  computed: mapState(["films"]),
   methods: {
     getMovies(e) {
       this.$store.dispatch("getFilms", e);
